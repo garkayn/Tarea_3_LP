@@ -2,6 +2,7 @@ package entorno;
 
 import java.util.EnumSet;
 import objetos.ItemTipo;
+import player.Jugador;
 
 public class ZonaVolcanica extends Zona {
 	private boolean planoEncontrado;
@@ -9,5 +10,10 @@ public class ZonaVolcanica extends Zona {
 	public ZonaVolcanica() {
 		super("volcanica", 1000, 1500, EnumSet.of(ItemTipo.TITANIO, ItemTipo.SULFURO, ItemTipo.URANIO));
 		this.planoEncontrado = false;
+	}
+
+	public void explorar(Jugador jugador) {
+
+	    System.out.println("Explorando la zona volcanica...");
 	}
 }

@@ -2,14 +2,30 @@ package player;
 
 public class Oxigeno {
 
-	private int oxigenoRestante;
-	private int capacidadMaxima;
+	private int oxigenoRestante = 60;
+	private int capacidadMaxima = 60;
 
-	public Oxigeno() {
-		this.oxigenoRestante = 60;
-		this.capacidadMaxima = 60;
+	// Getters
+	public int getOxigenoRestante() {
+		return oxigenoRestante;
+	}
+
+	public int getCapacidadMaxima() {
+		return capacidadMaxima;
 	}
 	
-	//public void consumirO2 (int unidades);
-	//public void recargarCompleto();
+	// Setters
+	public void setCapacidadMaxima (int unidades) {
+		capacidadMaxima = unidades;
+	}
+
+	/**/
+	public void consumirO2 (int unidades) {
+		oxigenoRestante -= unidades;
+	}
+	
+	/**/
+	public void recargarCompleto() {
+		oxigenoRestante = capacidadMaxima;
+	}
 }

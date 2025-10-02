@@ -1,24 +1,28 @@
 JFLAGS = -g
 JC = javac
-
 SRCDIR = .
-
+BINDIR = ./bin
 JAVA_SOURCES = $(shell find $(SRCDIR) -name "*.java")
-JAVA_CLASSES = $(patsubst %.java,%.class,$(JAVA_SOURCES))
+JAVA_CLASSES = $(patsubst $(SRCDIR)/%.java, $(BINDIR)/%.class, $(JAVA_SOURCES))
 
 all: compile
 
-compile: $(JAVA_CLASSES)
+compile: $(BINDIR) $(JAVA_CLASSES)
 
-%.class: %.java
-	$(JC) $(JFLAGS) -d $(SRCDIR) $<
+$(BINDIR):
+	mkdir -p $(BINDIR)
+
+$(BINDIR)/%.class: $(SRCDIR)/%.java
+	$(JC) $(JFLAGS) -d $(BINDIR) $<
+
+compile:
+	jar cfe Juego.jar Main -C $(BINDIR) .
 
 run: compile
-	jar cfe Juego.jar Main *.class player entorno objetos
+	java -jar Juego.jar
 
 clean:
-	$(RM) $(shell find $(SRCDIR) -name "*.class")
-	rm -f Juego.jar
+	$(RM) -r $(BINDIR)
+	$(RM) -f Juego.jar
 
 .PHONY: all compile run clean
-
