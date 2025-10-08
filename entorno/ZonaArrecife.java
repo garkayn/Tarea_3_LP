@@ -16,7 +16,8 @@ public class ZonaArrecife extends Zona {
 		super("Zona Arrecife", 0, 199, EnumSet.of(ItemTipo.CUARZO, ItemTipo.SILICIO, ItemTipo.COBRE));
 		piezasTanque = 3;
 	}
-
+	
+	@Override
 	public void explorar (Jugador jugador) {
 		
 		// Gasto de oxigeno
@@ -25,8 +26,7 @@ public class ZonaArrecife extends Zona {
 		jugador.getTanqueOxigeno().consumirO2(costoExp);
 		
 		// Obtención PIEZA_TANQUE o recolección recursos
-		Probabilidades probabilidad = new Probabilidades();
-		if (probabilidad.piezaTanque() && this.piezasTanque > 0) {
+		if (Probabilidades.piezaTanque() && this.piezasTanque > 0) {
 			ItemTipo tipo = ItemTipo.PIEZA_TANQUE;
 			Item piezaTanque = new Item(tipo, 1);
 			jugador.addInventario(piezaTanque);

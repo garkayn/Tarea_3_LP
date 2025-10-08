@@ -56,7 +56,7 @@ public abstract class Zona {
 	 * @return void
 	 */
 	public void entrar (Jugador jugador) {
-		jugador.setZonaActual(this);		
+		jugador.setZonaActual(this);	
 	}
 
 	public abstract void explorar (Jugador jugador);

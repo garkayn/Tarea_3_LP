@@ -50,7 +50,7 @@ public class Main {
 			System.out.println("Te encuentras en " + jugador.getZonaActual().getNombre() + ". Elige tu acción:\n");
 			System.out.println("1. Ver estado de " + jugador.getNombre() + "\n");
 			System.out.println("2. Abrir inventario\n");
-			System.out.println("3. Entrar a la nave exploradora\n");
+			System.out.println("3. Volver a la nave exploradora\n");
 			System.out.println("4. Subir\n");
 			System.out.println("5. Descender\n");
 			System.out.println("6. Explorar\n");
@@ -65,18 +65,55 @@ public class Main {
 			}
 
 			else if (respuesta.equals("4")) {
+
 				System.out.println("Ingresa la distancia que deseas subir:\n");
 				s = new Scanner(System.in);
 				respuesta = s.nextLine();
-				jugador.subir(Integer.parseInt(respuesta));
+
+				 int profundidadFinal = jugador.getProfundidadActual() - Integer.parseInt(respuesta);
+				
+				if (jugador.puedeAcceder(profundidadFinal)) {
+
+					if (profundidadFinal < 199) {
+						zonas.getArrecife().entrar(jugador);
+					} else if (profundidadFinal > 200 && profundidadFinal < 999) {
+						zonas.getProfunda().entrar(jugador);
+					} else if (profundidadFinal > 1000) {
+						zonas.getVolcanica().entrar(jugador);
+					}
+
+					jugador.setProfundidadActual(profundidadFinal);
+					int d = (jugador.getProfundidadActual() - jugador.getZonaActual().getProfundidadMin()) / Math.max(1, jugador.getZonaActual().getProfundidadMax() - jugador.getZonaActual().getProfundidadMin());
+					int costoMoverse = (3 + 3*d) * ((jugador.getProfundidadActual() - profundidadFinal) / 50);
+					jugador.getTanqueOxigeno().consumirO2(costoMoverse);
+				}
 			}
+
 			else if (respuesta.equals("5")) {
+
 				System.out.println("Ingresa la distancia que deseas descender:\n");
 				s = new Scanner(System.in);
 				respuesta = s.nextLine();
-				jugador.descender(Integer.parseInt(respuesta));
 
+				int profundidadFinal = jugador.getProfundidadActual() + Integer.parseInt(respuesta);
+
+				if (jugador.puedeAcceder(profundidadFinal)) {
+
+					if (profundidadFinal < 199) {
+						zonas.getArrecife().entrar(jugador);
+					} else if (profundidadFinal > 200 && profundidadFinal < 999) {
+						zonas.getProfunda().entrar(jugador);
+					} else if (profundidadFinal > 1000) {
+						zonas.getVolcanica().entrar(jugador);
+					}
+
+					jugador.setProfundidadActual(profundidadFinal);	
+					int d = (jugador.getProfundidadActual() - jugador.getZonaActual().getProfundidadMin()) / Math.max(1, jugador.getZonaActual().getProfundidadMax() - jugador.getZonaActual().getProfundidadMin());
+					int costoMoverse = (3 + 3*d) * ((profundidadFinal - jugador.getProfundidadActual()) / 50);
+					jugador.getTanqueOxigeno().consumirO2(costoMoverse);
+				}
 			}
+
 			else if (respuesta.equals("6")) {
 				jugador.getZonaActual().explorar(jugador);
 			} else if (respuesta.equals("0")) {

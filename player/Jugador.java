@@ -20,6 +20,7 @@ public class Jugador implements AccesoProfundidad {
 	private boolean trajeTermico;
 	private boolean mejoraTanque;
 	private boolean enNave; // Determina si el jugador se encuentra en la nave exploradora
+	private int profundidadRequerida; // La profundidad que se quiere mover el jugador
 
 	public Jugador(String nombre, Oxigeno tanqueInicial, NaveExploradora naveExploradora, Zona zonaInicial) {
 		this.nombre = nombre;
@@ -132,23 +133,17 @@ public class Jugador implements AccesoProfundidad {
 		}
 	}
 	
-	public void subir (int requerido) {
-
-		if (this.profundidadActual - requerido < 0) {
-			System.out.println("No es posible subir esa distancia");
-			return;
+	@Override
+	public boolean puedeAcceder (int requerido) {
+		
+		if (requerido < 0 || requerido > 1500) {
+			System.out.println("No puedes acceder a esa profundidad.");
+			return false;
+		} else if (!this.mejoraTanque && !this.trajeTermico && requerido > 999) {
+			System.out.println("No puedes acceder a la Zona Volcánica hasta que tengas la mejora de tanque y el traje térmico.");
+			return false;
+		} else {
+			return true;
 		}
-
-		this.profundidadActual -= requerido;
-	}
-
-	public void descender (int requerido) {
-
-		if (this.profundidadActual + requerido > 1500) {
-			System.out.println("No es posible descender esa distancia");
-			return;
-		}
-
-		this.profundidadActual += requerido;
-	}
+	} 
 }
