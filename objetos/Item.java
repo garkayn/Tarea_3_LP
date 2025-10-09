@@ -9,4 +9,16 @@ public class Item {
 		this.tipo = tipo;
 		this.cantidad = cantidad;
 	}
+
+	public ItemTipo getTipo() {
+		return this.tipo;
+	}
+
+	public int getCantidad() {
+		return this.cantidad;
+	}
+
+	public void setCantidad(int agregar) {
+		this.cantidad += agregar;
+	}
 }

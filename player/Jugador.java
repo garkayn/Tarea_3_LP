@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import objetos.AccesoProfundidad;
 import objetos.Item;
+import objetos.ItemTipo;
 import objetos.NaveExploradora;
 import entorno.Zona;
 
@@ -37,39 +38,43 @@ public class Jugador implements AccesoProfundidad {
 
 	// Getters
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public Oxigeno getTanqueOxigeno() {
-		return tanqueOxigeno;
+		return this.tanqueOxigeno;
 	}
 
 	public List<Item> getInventario() {
-		return inventario;
+		return this.inventario;
 	}
 
 	public Zona getZonaActual() {
-		return zonaActual;
+		return this.zonaActual;
 	}
 
 	public int getProfundidadActual() {
-		return profundidadActual;
+		return this.profundidadActual;
 	}
 
 	public boolean getTienePlanos() {
-		return tienePlanos;
+		return this.tienePlanos;
 	}
 
 	public NaveExploradora getNave() {
-		return nave;
+		return this.nave;
 	}
 
 	public boolean getTrajeTermico() {
-		return trajeTermico;
+		return this.trajeTermico;
 	}
 
 	public boolean getMejoraTanque() {
-		return mejoraTanque;
+		return this.mejoraTanque;
+	}
+
+	public boolean getEnNave() {
+		return this.enNave;
 	}
 
 	// Setters
@@ -78,7 +83,12 @@ public class Jugador implements AccesoProfundidad {
 	}
 
 	public void addInventario(Item i) {
-		this.inventario.add(i);
+		if(!inventario.contains(i.getTipo())) {
+			this.inventario.add(i);
+		} else {
+			int indice = this.inventario.indexOf(i.getTipo());
+			this.inventario.get(indice).setCantidad(i.getCantidad());
+		}
 	}
 
 	public void setZonaActual(Zona z) {
@@ -105,31 +115,29 @@ public class Jugador implements AccesoProfundidad {
 		this.mejoraTanque = t;
 	}
 
+	public void setEnNave(boolean value) {
+		this.enNave = value;
+	}
+
 	public void verEstadoJugador() {
 
-		System.out.println("--- Estado de " + this.nombre + " ---\n");
-		System.out.println("Oxigeno: " + this.tanqueOxigeno.getOxigenoRestante() + "/" + this.tanqueOxigeno.getCapacidadMaxima() + "\n");
-		System.out.println("Inventario: " + this.inventario + "\n");
-		System.out.println("Zona actual: " + this.zonaActual.getNombre() + "\n");
-		System.out.println("Profundidad actual: " + this.profundidadActual + "m\n");
-		System.out.println("-----------------------------------\n");
-		
-		if (this.enNave) {
-			System.out.println("Te encuentras dentro de la nave exploradora");		
-		}
-
-		System.out.println("-----------------------------------\n");
+		System.out.println("--- Estado de " + this.nombre + " ---");
+		System.out.println("Oxigeno: " + this.tanqueOxigeno.getOxigenoRestante() + "/" + this.tanqueOxigeno.getCapacidadMaxima());
+		System.out.println("Inventario: []");
+		System.out.println("Zona actual: " + this.zonaActual.getNombre());
+		System.out.println("Profundidad actual: " + this.profundidadActual + "m");
+		System.out.println("-----------------------------------");
 		
 		if (this.mejoraTanque) {
-			System.out.println("Mejora del tanque realizada\n");
+			System.out.println("-Mejora del tanque realizada");
 		}
 
 		if (this.trajeTermico) {
-			System.out.println("Tienes el traje térmico\n");
+			System.out.println("-Tienes el traje térmico");
 		}
 
 		if (this.tienePlanos) {
-			System.out.println("Tienes los planos de la nave estrellada\n");
+			System.out.println("-Tienes los planos de la nave estrellada");
 		}
 	}
 	

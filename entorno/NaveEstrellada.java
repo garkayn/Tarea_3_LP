@@ -8,7 +8,7 @@ public class NaveEstrellada extends Zona {
 	private boolean moduloEncontrado;
 
 	public NaveEstrellada() {
-		super("nave", 0, 0, EnumSet.of(ItemTipo.CABLES, ItemTipo.PIEZAS_DE_METAL));
+		super("nave", 0, 0, EnumSet.of(ItemTipo.CABLES, ItemTipo.PIEZAS_DE_METAL), 1, 4);
 		this.moduloEncontrado = false;
 	}
 

@@ -11,5 +11,9 @@ public abstract class Vehiculo {
 		this.bodega = new ArrayList<>();
 	}
 
+	public List<Item> getBodega() {
+		return this.bodega;
+	}
+
 	//public void transferirObjetos();
 }

@@ -12,12 +12,16 @@ public abstract class Zona {
 	private int profundidadMin;
 	private int profundidadMax;
 	private EnumSet<ItemTipo> recursos;
+	private int unidadesMin;
+	private int unidadesMax;
 	
-	public Zona (String nombre, int min, int max, EnumSet<ItemTipo> items) {
+	public Zona (String nombre, int min, int max, EnumSet<ItemTipo> items, int n_min, int n_max) {
 		this.nombre = nombre;
 		this.profundidadMin = min;
 		this.profundidadMax = max;
 		this.recursos = items;
+		this.unidadesMin = n_min;
+		this.unidadesMax = n_max;
 	}
 
 	// Getters
@@ -35,6 +39,14 @@ public abstract class Zona {
 
 	public EnumSet<ItemTipo> getRecursos() {
 		return recursos;
+	}
+
+	public int getUnidadesMin() {
+		return unidadesMin;
+	}
+
+	public int getUnidadesMax() {
+		return unidadesMax;
 	}
 
 	// Setters
@@ -60,4 +72,6 @@ public abstract class Zona {
 	}
 
 	public abstract void explorar (Jugador jugador);
+
+	//public abstract void recolectar (Jugador jugador);
 }

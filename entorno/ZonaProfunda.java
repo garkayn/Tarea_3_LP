@@ -8,7 +8,7 @@ public class ZonaProfunda extends Zona {
 	private int presion; // Definir valor presión con formula
 
 	public ZonaProfunda() {
-		super("Zona Profunda", 200, 999, EnumSet.of(ItemTipo.PLATA, ItemTipo.ORO, ItemTipo.ACERO, ItemTipo.DIAMANTE, ItemTipo.MAGNETITA));
+		super("Zona Profunda", 200, 999, EnumSet.of(ItemTipo.PLATA, ItemTipo.ORO, ItemTipo.ACERO, ItemTipo.DIAMANTE, ItemTipo.MAGNETITA), 2, 6);
 	}
 	
 	@Override
