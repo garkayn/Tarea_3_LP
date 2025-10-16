@@ -22,6 +22,7 @@ public class Jugador implements AccesoProfundidad {
 	private boolean mejoraTanque;
 	private boolean enNave; // Determina si el jugador se encuentra en la nave exploradora
 	private int profundidadRequerida; // La profundidad que se quiere mover el jugador
+	private boolean sofocacion;
 
 	public Jugador(String nombre, Oxigeno tanqueInicial, NaveExploradora naveExploradora, Zona zonaInicial) {
 		this.nombre = nombre;
@@ -34,6 +35,7 @@ public class Jugador implements AccesoProfundidad {
 		this.trajeTermico = false;
 		this.mejoraTanque = false;
 		this.enNave = true;
+		this.sofocacion = false;
 	}
 
 	// Getters
@@ -77,19 +79,31 @@ public class Jugador implements AccesoProfundidad {
 		return this.enNave;
 	}
 
+	public boolean getSofocacion() {
+		return this.sofocacion;
+	}
+
 	// Setters
 	public void setTanqueOxigeno(Oxigeno t) {
 		this.tanqueOxigeno = t;
 	}
 
-	public void addInventario(Item i) {
-		if(!inventario.contains(i.getTipo())) {
-			this.inventario.add(i);
-		} else {
-			int indice = this.inventario.indexOf(i.getTipo());
-			this.inventario.get(indice).setCantidad(i.getCantidad());
-		}
-	}
+public void addInventario(ItemTipo tipo, int cantidad) {
+    boolean itemEncontrado = false;
+
+    for (Item itemActual : this.inventario) {
+        if (itemActual.getTipo().equals(tipo)) {
+            itemActual.addCantidad(cantidad);
+            itemEncontrado = true;
+            break;
+        }
+    }
+
+    if (!itemEncontrado) {
+        Item nuevoItem = new Item(tipo, cantidad);
+        this.inventario.add(nuevoItem);
+    }
+}
 
 	public void setZonaActual(Zona z) {
 		this.zonaActual = z;
@@ -119,25 +133,36 @@ public class Jugador implements AccesoProfundidad {
 		this.enNave = value;
 	}
 
+	public void setSofocacion(boolean value) {
+		this.sofocacion = value;
+	}
+
 	public void verEstadoJugador() {
 
 		System.out.println("--- Estado de " + this.nombre + " ---");
 		System.out.println("Oxigeno: " + this.tanqueOxigeno.getOxigenoRestante() + "/" + this.tanqueOxigeno.getCapacidadMaxima());
-		System.out.println("Inventario: []");
-		System.out.println("Zona actual: " + this.zonaActual.getNombre());
+		System.out.print("Inventario: [");
+		for (int i = 0; i < this.inventario.size(); i++) {
+			System.out.print(this.inventario.get(i));
+			if(i < this.inventario.size() - 1) {
+				System.out.print(", ");
+			}
+		}
+		System.out.println("]");
+		System.out.println("Zona actual: " + this.zonaActual.nombre);
 		System.out.println("Profundidad actual: " + this.profundidadActual + "m");
 		System.out.println("-----------------------------------");
 		
 		if (this.mejoraTanque) {
-			System.out.println("-Mejora del tanque realizada");
+			System.out.println("- Mejora del tanque realizada");
 		}
 
 		if (this.trajeTermico) {
-			System.out.println("-Tienes el traje térmico");
+			System.out.println("- Traje térmico creado");
 		}
 
 		if (this.tienePlanos) {
-			System.out.println("-Tienes los planos de la nave estrellada");
+			System.out.println("- Planos de la nave estrellada encontrados");
 		}
 	}
 	
@@ -145,7 +170,7 @@ public class Jugador implements AccesoProfundidad {
 	public boolean puedeAcceder (int requerido) {
 		
 		if (requerido < 0 || requerido > 1500) {
-			System.out.println("No puedes acceder a esa profundidad.");
+			System.out.println("No puedes acceder a esa profundidad");
 			return false;
 		} else if (!this.mejoraTanque && !this.trajeTermico && requerido > 999) {
 			System.out.println("No puedes acceder a la Zona Volcánica hasta que tengas la mejora de tanque y el traje térmico.");

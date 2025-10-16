@@ -25,9 +25,6 @@ public abstract class Zona {
 	}
 
 	// Getters
-	public String getNombre() {
-		return nombre;
-	}
 
 	public int getProfundidadMin() {
 		return profundidadMin;
@@ -73,5 +70,5 @@ public abstract class Zona {
 
 	public abstract void explorar (Jugador jugador);
 
-	//public abstract void recolectar (Jugador jugador);
+	public abstract void recolectar (Jugador jugador);
 }

@@ -10,6 +10,11 @@ public class Item {
 		this.cantidad = cantidad;
 	}
 
+	@Override
+	public String toString() {
+		return tipo + " (" + cantidad + ")";
+	}
+
 	public ItemTipo getTipo() {
 		return this.tipo;
 	}
@@ -18,7 +23,7 @@ public class Item {
 		return this.cantidad;
 	}
 
-	public void setCantidad(int agregar) {
+	public void addCantidad(int agregar) {
 		this.cantidad += agregar;
 	}
 }

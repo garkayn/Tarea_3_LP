@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+import java.util.List;
+import java.util.ArrayList;
+import objetos.Item;
+import objetos.ItemTipo;
 import player.Jugador;
 import player.Oxigeno;
 import entorno.Zonas;
@@ -46,6 +50,23 @@ public class Main {
 		Jugador jugador = new Jugador(respuesta, tanqueInicial, nave, zonas.getArrecife());
 		
 		while (juegoActivo) {
+
+			if(jugador.getTanqueOxigeno().getOxigenoRestante() <= 0 || jugador.getSofocacion()) {
+				List<Item> porBorrar = new ArrayList<>();
+				for (Item item : jugador.getInventario()) {
+					if (!(item.getTipo().name().equals("PIEZA_TANQUE") || item.getTipo().name().equals("MODULO_PROFUNDIDAD") || item.getTipo().name().equals("PLANO_NAVE") || item.getTipo().name().equals("MEJORA_TANQUE") || item.getTipo().name().equals("TRAJE_TERMICO") || item.getTipo().name().equals("ROBOT_EXCAVADOR"))) {
+						porBorrar.add(item);
+					}
+				}
+				for (Item item : porBorrar) {
+					jugador.getInventario().remove(item);
+				}
+				jugador.setEnNave(true);
+				jugador.setProfundidadActual(jugador.getNave().getProfundidadAnclaje());
+				jugador.getTanqueOxigeno().recargarCompleto();
+				jugador.setSofocacion(false);
+				System.out.println("Has perdido el conocimiento. Volviendo a la nave...");
+			}
 			
 			if (jugador.getEnNave()) {
 				Menu.menuNaveExploradora(jugador, zonas, nave);
