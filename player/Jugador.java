@@ -8,6 +8,7 @@ import objetos.Item;
 import objetos.ItemTipo;
 import objetos.NaveExploradora;
 import entorno.Zona;
+import objetos.RobotExcavador;
 
 public class Jugador implements AccesoProfundidad {
 
@@ -23,6 +24,9 @@ public class Jugador implements AccesoProfundidad {
 	private boolean enNave; // Determina si el jugador se encuentra en la nave exploradora
 	private int profundidadRequerida; // La profundidad que se quiere mover el jugador
 	private boolean sofocacion;
+	private boolean moduloActivo;
+	private RobotExcavador robot;
+	public boolean juegoActivo;
 
 	public Jugador(String nombre, Oxigeno tanqueInicial, NaveExploradora naveExploradora, Zona zonaInicial) {
 		this.nombre = nombre;
@@ -36,6 +40,8 @@ public class Jugador implements AccesoProfundidad {
 		this.mejoraTanque = false;
 		this.enNave = true;
 		this.sofocacion = false;
+		this.moduloActivo = false;
+		this.juegoActivo = false;
 	}
 
 	// Getters
@@ -81,6 +87,14 @@ public class Jugador implements AccesoProfundidad {
 
 	public boolean getSofocacion() {
 		return this.sofocacion;
+	}
+
+	public boolean getModuloActivo() {
+		return this.moduloActivo;
+	}
+
+	public RobotExcavador getRobot() {
+		return this.robot;
 	}
 
 	// Setters
@@ -137,6 +151,15 @@ public void addInventario(ItemTipo tipo, int cantidad) {
 		this.sofocacion = value;
 	}
 
+	public void setModuloActivo(boolean value) {
+		this.moduloActivo = value;
+	}
+
+	public void setRobot(RobotExcavador nuevoRobot) {
+		this.robot = nuevoRobot;
+	}
+
+
 	public void verEstadoJugador() {
 
 		System.out.println("--- Estado de " + this.nombre + " ---");
@@ -163,6 +186,10 @@ public void addInventario(ItemTipo tipo, int cantidad) {
 
 		if (this.tienePlanos) {
 			System.out.println("- Planos de la nave estrellada encontrados");
+		}
+
+		if (this.moduloActivo) {
+			System.out.println("- Módulo de profundidad instalado");
 		}
 	}
 	

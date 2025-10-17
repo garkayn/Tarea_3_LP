@@ -56,7 +56,8 @@ public class ZonaProfunda extends Zona {
 		int seleccion = Integer.parseInt(respuesta);
 		ItemTipo recursoElegido = listaRecursos.get(seleccion - 1);
 
-		int cantidad = Math.max(1, (int) Math.floor(getUnidadesMin() + (getUnidadesMax() - getUnidadesMin()) * d));		jugador.addInventario(recursoElegido, cantidad);
+		int cantidad = Math.max(1, (int) Math.floor(getUnidadesMin() + (getUnidadesMax() - getUnidadesMin()) * d));		
+		jugador.addInventario(recursoElegido, cantidad);
 		System.out.println("Se recolectó " + recursoElegido.name() + " (" + cantidad + ")");
 	}
 }

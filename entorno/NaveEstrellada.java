@@ -28,7 +28,6 @@ public class NaveEstrellada extends Zona {
 
 			this.moduloEncontrado = true;
 			System.out.println("Modulo de profundidad encontrado...");
-			jugador.getNave().conseguirMejoraProfundidad();
 		} else {
 			int cantidad = 1;
 			ItemTipo recurso = Probabilidades.recursosEstrellada();

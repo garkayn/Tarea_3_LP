@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import player.Jugador;
 import objetos.NaveExploradora;
 import entorno.Zonas;
+import utils.Receta;
+import utils.MejoraTanqueReceta;
 
 
 public class Menu {
@@ -39,13 +41,19 @@ public class Menu {
 			jugador.setProfundidadActual(jugador.getNave().getProfundidadAnclaje());
 
 		} else if (respuesta.equals("3")) {
-			if(jugador.getZonaActual().equals("Nave Estrellada")) {
+			if(jugador.getZonaActual().nombre.equals("Nave Estrellada") && !jugador.getTrajeTermico()) {
+				jugador.setSofocacion(true);
+			}
+			if (Probabilidades.especiales(0.2) && jugador.getZonaActual().nombre.equals("Zona Volcánica")) {
 				jugador.setSofocacion(true);
 			}
 			jugador.getZonaActual().explorar(jugador);
 
 		} else if (respuesta.equals("4")) {
-			if(jugador.getZonaActual().equals("Nave Estrellada")) {
+			if(jugador.getZonaActual().nombre.equals("Nave Estrellada") && !jugador.getTrajeTermico()) {
+				jugador.setSofocacion(true);
+			}
+			if (Probabilidades.especiales(0.2) && jugador.getZonaActual().nombre.equals("Zona Volcánica")) {
 				jugador.setSofocacion(true);
 			}
 			jugador.getZonaActual().recolectar(jugador);
@@ -76,7 +84,7 @@ public class Menu {
 		} 
 	}
 
-	public static void menuNaveExploradora (Jugador jugador, Zonas zonas, NaveExploradora nave) {
+	public static void menuNaveExploradora (Jugador jugador, Zonas zonas, NaveExploradora nave, List<Receta> todasLasRecetas) {
 		
 		System.out.println("\n-- NAVE EXPLORADORA --");
 		System.out.println("Zona actual: " + jugador.getZonaActual().nombre + " | Anclaje: " + nave.getProfundidadAnclaje() + " m | Inventario nave: " + nave.getBodega().size());
@@ -110,6 +118,37 @@ public class Menu {
 		} else if (respuesta.equals("2")) {
 
 			jugador.getNave().transferirObjetos(jugador);
+
+		} else if (respuesta.equals("3")) {
+
+			List<Receta> recetasDisponibles = new ArrayList<>();
+			for (Receta receta : todasLasRecetas) {
+				if (receta.puedeCrear(jugador)) {
+					recetasDisponibles.add(receta);
+				}
+			}
+
+			if (recetasDisponibles.isEmpty()) {
+                System.out.println("No hay recetas disponibles con tus materiales actuales.");
+            } else {
+                System.out.println("Recetas disponibles:");
+                for (int i = 0; i < recetasDisponibles.size(); i++) {
+
+                    Receta r = recetasDisponibles.get(i);
+                    String estadoItem = "";
+
+                    if (r.getNombre().equals("Mejora de tanque") && jugador.getMejoraTanque()) {
+                        estadoItem = " (creada)";
+                    }
+                    System.out.println((i + 1) + ") " + r.getNombre() + estadoItem);
+                }
+				System.out.print("\nElige una receta para crear: ");
+				s = new Scanner(System.in);
+				respuesta = s.nextLine();
+
+				Receta recetaACrear = recetasDisponibles.get(Integer.parseInt(respuesta) - 1);
+				recetaACrear.crear(jugador);
+			}
 
 		} else if (respuesta.equals("4")) {
 
@@ -147,7 +186,7 @@ public class Menu {
 				zonas.getProfunda().entrar(jugador);
 				cambioZona = true;
 			} else if (respuesta.equals("v")) {
-				if (jugador.getNave().puedeAcceder(1000) && jugador.puedeAcceder(1000)) {
+				if (jugador.getNave().puedeAcceder(1000)) {
 					jugador.getNave().setProfundidadAnclaje(1000);
 					jugador.setProfundidadActual(1000);
 					zonas.getVolcanica().entrar(jugador);
@@ -167,8 +206,22 @@ public class Menu {
 			}
 
 		} else if (respuesta.equals("5")) {
-			jugador.setEnNave(false);
-			System.out.println("Saliendo de la nave. Profundidad actual: " + jugador.getProfundidadActual() + "m.");
+
+			if ((jugador.getZonaActual().nombre.equals("Zona Volcánica") && jugador.puedeAcceder(1000))) {
+				if (Probabilidades.especiales(0.2) && jugador.getZonaActual().nombre.equals("Zona Volcánica")) {
+					jugador.setSofocacion(true);
+				} else {
+					jugador.setEnNave(false);
+					System.out.println("Saliendo de la nave. Profundidad actual: " + jugador.getProfundidadActual() + "m.");
+				}
+			} else {
+				if (Probabilidades.especiales(0.2) && jugador.getZonaActual().nombre.equals("Zona Volcánica")) {
+					jugador.setSofocacion(true);
+				} else {
+					jugador.setEnNave(false);
+					System.out.println("Saliendo de la nave. Profundidad actual: " + jugador.getProfundidadActual() + "m.");
+				}
+			}
 
 		} else if (respuesta.equals("6")) {
 
@@ -185,6 +238,5 @@ public class Menu {
 			System.out.println("Saliendo...");
 			System.exit(0);
 		}
-
 	}
 }
